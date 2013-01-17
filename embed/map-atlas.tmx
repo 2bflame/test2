@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="40" height="20" tilewidth="64" tileheight="64">
+<map version="1.0" orientation="orthogonal" width="20" height="10" tilewidth="64" tileheight="64">
  <tileset firstgid="1" name="tiles" tilewidth="64" tileheight="64">
-  <image source="test2-tiles.png" width="1240" height="256"/>	
+  <image source="test2-tiles.png" width="1280" height="640"/>	
   <tile id="0">
    <properties>
     <property name="name" value="images_01"/>
@@ -218,8 +218,8 @@
    eJxjYBgaQBgJ81PBPDY0GgZ4gJgXCRMCAlRwCzKQGgDzeLFgbqicMBnm4QPyaGbiMo+UOICZyQM1j5ppBQCQ7gJY
   </data>
  </layer>
- <objectgroup name="objects" width="20" height="10">
-  <object name="hero" type="tiled.Hero" x="107" y="494" width="25" height="40">
+ <objectgroup name="objects">
+  <object name="hero" type="tiled.Hero" x="107" y="494" width="1" height="1">
    <properties>
     <property name="view" value="PatchStarlingArt.swf"/>
    </properties>
