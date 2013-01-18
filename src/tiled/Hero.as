@@ -1,5 +1,7 @@
 package tiled
 {
+	import flash.geom.Point;
+	
 	import citrus.objects.CitrusSprite;
 	
 	public class Hero extends CitrusSprite
@@ -22,5 +24,10 @@ package tiled
 		
 		
 		
+		public function moveTo(delta:Point):void
+		{
+			x += delta.x;
+			y += delta.y;
+		}
 	}
 }

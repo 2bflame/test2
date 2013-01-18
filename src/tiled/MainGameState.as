@@ -17,12 +17,11 @@ package tiled {
 	 * @author Aymeric
 	 */
 	public class MainGameState extends StarlingState {
-		
-		
 
 		
 		private var hero:Hero;
 		private var heroArt:DisplayObject;
+		private var bar:GameBar;
 
 		public function MainGameState() {
 			super();
@@ -32,15 +31,10 @@ package tiled {
 		}
 
 		override public function initialize():void {
-
 			super.initialize();
-			y=100; 
+			y=100;
+			bar = new GameBar(stage);
 			MyAssets.fromMap("mainMap");
-//			for each(var obj:* in MyAssets.fromMap("mainMap")){
-//				if(obj is CitrusSprite){
-//					(obj as CitrusSprite).x+=20;					
-//				}
-//			}
 			
 			hero = getObjectByName("hero") as Hero;
 
@@ -50,11 +44,6 @@ package tiled {
 			
 			addEventListener(TouchEvent.TOUCH, handleHeroClick);
 			// Pause button.
-			var pauseButton:Button = new Button(MyAssets.getAtlas().getTexture("startButton"));
-			pauseButton.x = pauseButton.width=100;
-			pauseButton.y = 0;
-			pauseButton.addEventListener(Event.TRIGGERED, handleHeroClick);
-			stage.addChild(pauseButton);						
 		}
 		
 		private function handleHeroClick(event:TouchEvent):void
@@ -64,8 +53,7 @@ package tiled {
 			{
 				// one finger touching / one mouse curser moved
 				var delta:Point = touches[0].getLocation(heroArt);
-				hero.x += delta.x;
-				hero.y += delta.y;
+				hero.moveTo(delta);
 
 			}
 		}
