@@ -6,9 +6,7 @@ package tiled {
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
 	
-	import starling.display.Button;
 	import starling.display.DisplayObject;
-	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
