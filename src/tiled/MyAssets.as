@@ -50,9 +50,11 @@ package tiled
 			return gameAtlases[name];
 		}
 		
-		public static function fromMap(name:String):Array
+		public static function getMap(name:String):MyMap
 		{
-			mapObjects[name]=ObjectMakerStarling.FromTiledMap(XML(new MyAssets[name+"Tmx"]), MyAssets.atlas(name + "Atlas"));
+			if(mapObjects[name]==null){
+				mapObjects[name]=new MyMap().FromTiledMap(XML(new MyAssets[name+"Tmx"]), MyAssets.atlas(name + "Atlas"));				
+			}
 			return mapObjects[name];
 		}
 		

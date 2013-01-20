@@ -6,6 +6,7 @@ package tiled
 	
 	public class Hero extends CitrusSprite
 	{
+		private var velocity:int=100;
 		public function Hero(name:String, params:Object=null)
 		{
 			super(name, params);

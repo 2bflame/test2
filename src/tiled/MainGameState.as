@@ -1,15 +1,18 @@
 package tiled {
 
+	import com.rush.HexLightsOut;
+	
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	import citrus.core.starling.StarlingState;
-	import citrus.math.MathVector;
 	
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	
+	import vis.GGraph;
 	
 	/**
 	 * @author Aymeric
@@ -20,23 +23,29 @@ package tiled {
 		private var hero:Hero;
 		private var heroArt:DisplayObject;
 		private var bar:GameBar;
+		private static var me:MainGameState;
 
 		public function MainGameState() {
 			super();
+			me=this;
 			
 			// Useful for not forgetting to import object from the Level Editor
 			var objects:Array = [Hero];
+		}
+		
+		public static function getInstance():MainGameState{
+			return me;	
 		}
 
 		override public function initialize():void {
 			super.initialize();
 			y=100;
 			bar = new GameBar(stage);
-			MyAssets.fromMap("mainMap");
+			MyAssets.getMap("mainMap");
 			
 			hero = getObjectByName("hero") as Hero;
 
-			view.setupCamera(stage, new MathVector(stage.stageWidth / 2, stage.stageHeight/2), new Rectangle(0, 0, 1280, 1280));
+			view.setupCamera();
 			
 			heroArt = view.getArt(hero) as DisplayObject;
 			
@@ -55,6 +64,38 @@ package tiled {
 
 			}
 		}
+
+		private var graph:GGraph=null;
+		private var map:HexLightsOut=null;
+		
+		public function show_graph():void
+		{
+			if(graph==null){
+				graph = new GGraph();
+				Starling.current.nativeStage.addChild(graph);
+			}
+			else{
+				Starling.current.nativeStage.removeChild(graph);				
+				graph = null;
+			}
+		}
+		
+		public function show_map():void
+		{
+			if(map==null){
+				map = new HexLightsOut(width,height);
+				map.y=y;
+
+				Starling.current.nativeStage.addChild(map);
+			}
+			else{
+				Starling.current.nativeStage.removeChild(map);				
+				map = null;
+			}
+			
+			
+		}
+		
 		
 	}
 }

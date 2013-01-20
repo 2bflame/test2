@@ -1,5 +1,7 @@
 package tiled
 {
+	import com.rush.HexLightsOut;
+	
 	import feathers.controls.Button;
 	import feathers.themes.AeonDesktopTheme;
 	
@@ -9,11 +11,12 @@ package tiled
 	import starling.events.Event;
 	
 	import vis.GGraph;
-	import com.rush.HexLightsOut;
 
 	public class GameBar extends Sprite
 	{
-		private var pauseButton:Button;
+		private var map_button:Button;
+		private var graph_button:Button;
+		
 		private var stage:Stage;
 		private var graph:GGraph=null;
 		private var map:HexLightsOut=null;
@@ -25,33 +28,37 @@ package tiled
 			
 			new AeonDesktopTheme(stage);
 			
-			pauseButton = new Button();
-			pauseButton.label = "Click Me";
-			pauseButton.x = 100;
-			pauseButton.y = 10;
-			pauseButton.addEventListener(Event.TRIGGERED, button_triggeredHandler);
-			addChild(pauseButton);
+			var y:int=10;
+			var x:int=100;
+			var width:int=100;
+			var deltax:int=20;
+			
+			map_button = new Button();
+			map_button.label = "map";
+			map_button.x = x;
+			map_button.y = y;
+			map_button.width = width;
+			map_button.addEventListener(Event.TRIGGERED, mapHandler);
+			addChild(map_button);
+			x+=width+deltax;
+			
+			graph_button = new Button();
+			graph_button.label = "grap";
+			graph_button.x = x;
+			graph_button.y = y;
+			graph_button.width= width;
+			graph_button.addEventListener(Event.TRIGGERED, graphHandler);
+			addChild(graph_button);
 		}
 		
-		protected function button_triggeredHandler(event:Event):void
+		protected function graphHandler(event:Event):void
 		{
-//			if(graph==null){
-//				graph = new GGraph();
-//				Starling.current.nativeStage.addChild(graph);
-//			}
-//			else{
-//				Starling.current.nativeStage.removeChild(graph);				
-//				graph = null;
-//			}
-			if(map==null){
-				map = new HexLightsOut();
-				Starling.current.nativeStage.addChild(map);
-			}
-			else{
-				Starling.current.nativeStage.removeChild(map);				
-				map = null;
-			}
-			
+			MainGameState.getInstance().show_graph();
+		}
+		
+		protected function mapHandler(event:Event):void
+		{
+			MainGameState.getInstance().show_map();		
 		
 		}
 	}

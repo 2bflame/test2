@@ -12,13 +12,13 @@ package com.rush
 
 	public class HexGridCell
 	{
-		static private const NEIGHBORS_DI:Array = [ 0, 1, 1, 0, -1, -1 ];
+		static private const NEIGHBORS_DI:Array = [ 0, 1, 1, 0, -1, -1 ]; //neighbors from the one on top clockwise
 		static private const NEIGHBORS_DJ:Array = [ [ -1, -1, 0, 1, 0, -1 ], [ -1, 0, 1, 1, 1, 0 ] ];
 		
 		private var CORNERS_DX:Array = [];
 		private var CORNERS_DY:Array = [];
 		
-		private var SIDE:int;
+		public var SIDE:int;
 
 		private var mX:int = 0; // cell's left coordinate
 		private var mY:int = 0; // cell's top coordinate
