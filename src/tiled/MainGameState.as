@@ -30,7 +30,7 @@ package tiled {
 			me=this;
 			
 			// Useful for not forgetting to import object from the Level Editor
-			var objects:Array = [Hero];
+			var objects:Array = [Hero,Static];
 		}
 		
 		public static function getInstance():MainGameState{
@@ -59,8 +59,13 @@ package tiled {
 			if (touches.length == 1)
 			{
 				// one finger touching / one mouse curser moved
-				var delta:Point = touches[0].getLocation(heroArt);
-				hero.moveTo(delta);
+				var point:Point = touches[0].getLocation(this);
+				
+				for each(var obj:Static in getObjectsByType(Static)){
+					if(obj.within(point)){
+						hero.moveToPoint(point);
+					}
+				}
 
 			}
 		}
