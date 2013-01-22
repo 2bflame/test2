@@ -31,7 +31,6 @@
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
     </libraryPath>
     <sourceAttachmentPath>
-      <sourceAttachmentPathEntry kind="3" linkType="1" path="D:/fworkspace/test2/libs/CEV3-1-1-ALL.swc" sourcepath="D:/fworkspace/Citrus-Engine/src" useDefaultLinkType="false"/>
       <sourceAttachmentPathEntry kind="3" linkType="1" path="D:/fworkspace/test2/libs/feathers.swc" sourcepath="D:/Program Files (x86)/Adobe Gaming SDK 1.0/Frameworks/Feathers/feathers-1.0.0/source" useDefaultLinkType="false"/>
     </sourceAttachmentPath>
   </compiler>

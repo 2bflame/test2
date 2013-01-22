@@ -219,9 +219,10 @@
   </data>
  </layer>
  <objectgroup name="objects" width="0" height="0" visible="0">
-  <object name="hero" type="tiled.Hero" x="107" y="494" width="1" height="1">
+  <object name="hero" type="tiled.Hero" x="107" y="494" width="50" height="100">
    <properties>
     <property name="view" value="PatchStarlingArt.swf"/>
+    <property name="registration" value="center"/>
    </properties>
   </object>
   <object name="well" type="tiled.Static" x="644" y="68" width="59" height="55"/>

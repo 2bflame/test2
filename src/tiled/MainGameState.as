@@ -1,10 +1,14 @@
 package tiled {
 
-	import com.rush.HexLightsOut;
+	import com.rush.HexMap;
 	
+	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
+	import citrus.core.CitrusObject;
 	import citrus.core.starling.StarlingState;
+	
+	import feathers.core.PopUpManager;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -13,17 +17,19 @@ package tiled {
 	import starling.events.TouchPhase;
 	
 	import vis.GGraph;
+	import feathers.controls.Label;
 	
 	/**
 	 * @author Aymeric
 	 */
 	public class MainGameState extends StarlingState {
-
+		private static var me:MainGameState;
+		static public const ORANGE:int = 0xFF5721;
 		
 		private var hero:Hero;
 		private var heroArt:DisplayObject;
 		private var bar:GameBar;
-		private static var me:MainGameState;
+		private var objects_container: MovieClip;
 
 		public function MainGameState() {
 			super();
@@ -60,18 +66,37 @@ package tiled {
 			{
 				// one finger touching / one mouse curser moved
 				var point:Point = touches[0].getLocation(this);
-				
+				var static:int=0;
 				for each(var obj:Static in getObjectsByType(Static)){
 					if(obj.within(point)){
-						hero.moveToPoint(point);
+						static=1;
+						const label:Label = new Label();
+						label.text = "Hello";
+						label.x=obj.x;
+						label.y=obj.y;
+						PopUpManager.addPopUp(label);
+						break;
 					}
+				}
+				if(!static){
+					hero.moveToPoint(point);					
 				}
 
 			}
 		}
 
 		private var graph:GGraph=null;
-		private var map:HexLightsOut=null;
+		private var map:HexMap=null;
+		
+		public function addNative(obj:flash.display.DisplayObject):void
+		{
+			Starling.current.nativeStage.addChild(obj);
+		}
+		
+		public function removeNative(obj:flash.display.DisplayObject):void
+		{
+			Starling.current.nativeStage.removeChild(obj);				
+		}
 		
 		public function show_graph():void
 		{
@@ -88,19 +113,36 @@ package tiled {
 		public function show_map():void
 		{
 			if(map==null){
-				map = new HexLightsOut(width,height);
-				map.y=y;
+				map = new HexMap(width,height);
+				map.show(0,y);
 
-				Starling.current.nativeStage.addChild(map);
 			}
 			else{
-				Starling.current.nativeStage.removeChild(map);				
+				map.hide()
 				map = null;
 			}
-			
-			
+		}		
+		
+		public function show_objects():void
+		{
+			if(objects_container==null){
+				objects_container=new MovieClip();
+				addNative(objects_container);
+				objects_container.y=y;
+				objects_container.graphics.lineStyle( 2, ORANGE, 0.9 );
+				for each(var obj:* in getObjectsByType(CitrusObject)){
+					try{
+						objects_container.graphics.drawRect(obj.x-obj.width/2,obj.y-obj.height/2,obj.width,obj.height);						
+					}catch(e:*){						
+					}
+				}
+				
+				
+			}
+			else{
+				removeNative(objects_container);
+				objects_container=null;
+			}
 		}
-		
-		
 	}
 }

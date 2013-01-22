@@ -17,7 +17,7 @@ package tiled
 		
 		public function within(point:Point):int
 		{
-			if(point.x>_x && point.x<_x+width && point.y>y && point.y<y+height) return 1;
+			if(point.x>_x-width/2 && point.x<_x+width/2 && point.y>y-height/2 && point.y<y+height/2) return 1;
 			return 0;
 		}
 		

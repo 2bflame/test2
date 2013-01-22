@@ -1,13 +1,10 @@
 package com.rush
 {
+	import flash.display.Graphics;
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import citrus.core.CitrusEngine;
-	import citrus.view.CitrusView;
-	
-	import tiled.Main;
+	import starling.core.Starling;
 	
 	/**
 	 * Example applet which uses hexagonal grid. It's a hexagonal version of the
@@ -18,14 +15,10 @@ package com.rush
 	 * Converted to AS3
 	 */
 	
-	public class HexLightsOut extends MovieClip
-	{
-		private var game:MovieClip;
-		
+	public class HexMap
+	{	
 		static public const ORANGE:int = 0xFF5721;
 		static public const GRAY:int = 0xCCCCCC;
-		
-		static private var serialVersionUID:Number;
 		
 		private var BOARD_WIDTH:int;
 		private var BOARD_HEIGHT:int;
@@ -37,34 +30,27 @@ package com.rush
 		private var mCornersX:Array = [NUM_HEX_CORNERS];
 		private var mCornersY:Array = [NUM_HEX_CORNERS];
 		
-		private var map_width:int;
-		private var map_height:int;
+		private var width:int;
+		private var height:int;
 
 		private var mCellMetrics:HexGridCell  = new HexGridCell(CELL_RADIUS);
+		private var display_object: MovieClip;
 		
-		public function HexLightsOut(width:int,height:int)
+		public function HexMap(width:int,height:int)
 		{
-			map_width=width;
-			map_height=height;
-			
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-		}
-		
-		private function onAddedToStage(e:Event):void
-		{
-			stage.addEventListener( MouseEvent.MOUSE_UP, mouse_released );
+			this.width=width;
+			this.height=height;
 			mCellMetrics = new HexGridCell(CELL_RADIUS);
-			BOARD_WIDTH=map_width/mCellMetrics.SIDE;
-			BOARD_HEIGHT=map_height/mCellMetrics.HEIGHT;
-			paint();
-
+			BOARD_WIDTH=width/mCellMetrics.SIDE;
+			BOARD_HEIGHT=height/mCellMetrics.HEIGHT;			
 		}
 
 		public function paint():void
 		{
-			this.graphics.clear();
-			this.graphics.lineStyle( 2, ORANGE, 0.9 );
-			graphics.drawRect(0,0, 1280, 640);
+			var graphics:Graphics=display_object.graphics;
+			graphics.clear();
+			graphics.lineStyle( 2, ORANGE, 0.9 );
+			graphics.drawRect(0,0, width, height);
 
 			
 			for ( var j:int = 0; j < BOARD_HEIGHT; j++ )
@@ -82,22 +68,17 @@ package com.rush
 						
 						for ( var k:int = 0; k < mCornersX.length-1; k++ )
 						{
-							if( k == 0 ) this.graphics.moveTo( mCornersX[k], mCornersY[k] );
+							if( k == 0 ) graphics.moveTo( mCornersX[k], mCornersY[k] );
 							
-							this.graphics.lineTo( mCornersX[k + 1], mCornersY[k + 1] );
+							graphics.lineTo( mCornersX[k + 1], mCornersY[k + 1] );
 						}
 						
-						this.graphics.lineTo( mCornersX[0], mCornersY[0] );
+						graphics.lineTo( mCornersX[0], mCornersY[0] );
 						
 						//this.graphics.endFill();
 
 				}
 			}
-		}
-		
-		public function update():void
-		{
-			paint();
 		}
 
 		/**
@@ -115,7 +96,7 @@ package com.rush
 		
 		private function mouse_released( e:MouseEvent ):void
 		{
-			mCellMetrics.setCellByPoint( mouseX, mouseY );
+			mCellMetrics.setCellByPoint( display_object.mouseX, display_object.mouseY );
 			
 			var clickI:int = mCellMetrics.getIndexI();
 			var clickJ:int = mCellMetrics.getIndexJ();
@@ -124,6 +105,26 @@ package com.rush
 			paint();
 
 		}
+		
+		public function show(x:int, y:Number):void
+		{
+			display_object=new MovieClip();
+			display_object.x=x;
+			display_object.y=y;
+			Starling.current.nativeStage.addChild(display_object);
+			display_object.stage.addEventListener( MouseEvent.MOUSE_UP, mouse_released );
+			paint();
+		
+		}
+		
+		public function hide():void
+		{
+			display_object.stage.removeEventListener( MouseEvent.MOUSE_UP, mouse_released );
+			display_object.stage.removeChild(display_object);
+			display_object=null;
+		}
+		
+		
 	}
 }
 
