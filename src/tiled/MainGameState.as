@@ -4,20 +4,25 @@ package tiled {
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import citrus.core.CitrusObject;
 	import citrus.core.starling.StarlingState;
 	
+	import feathers.controls.Callout;
+	import feathers.controls.Label;
 	import feathers.core.PopUpManager;
+	import feathers.display.ScrollRectManager;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.events.EnterFrameEvent;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
 	import vis.GGraph;
-	import feathers.controls.Label;
 	
 	/**
 	 * @author Aymeric
@@ -72,9 +77,23 @@ package tiled {
 						static=1;
 						const label:Label = new Label();
 						label.text = "Hello";
-						label.x=obj.x;
-						label.y=obj.y;
-						PopUpManager.addPopUp(label);
+						var callout:Callout =Callout.defaultCalloutFactory();
+						callout.content=label;
+						callout.x=obj.x-obj.width/2;
+						callout.y=obj.y+obj.height/2+5;
+						function enterFrameHandler(event:EnterFrameEvent):void
+						{
+							callout.x=obj.x-callout.width/2;							
+						}
+						function callout_closeHandler(event:Event):void
+						{
+							callout.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+							callout.removeEventListener(Event.CLOSE, callout_closeHandler);
+						}
+						callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+						callout.addEventListener(Event.CLOSE, callout_closeHandler);
+						PopUpManager.popUp(callout,true,false);
+						addChild(callout);
 						break;
 					}
 				}
