@@ -1,9 +1,13 @@
 package vis
 {
 	
-	import flash.display.*;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.text.*;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
+	
+	import structs.graphs.MyVertex;
 	
 	public class GVertex extends Sprite
 	{
@@ -16,10 +20,15 @@ package vis
 		private var _nField:TextField;
 		private var _selected:Boolean;
 		private var _hover:Boolean;
+
+		private var current:MyVertex;
 		
-		public function GVertex( name:String )
+		public function GVertex( current:MyVertex )
 		{
-			_name = name;
+			this.current = current;
+			_name = current.data.name;
+			x = current.data.x;
+			y = current.data.y;
 			_selected = _hover = false;
 			marked = false;
 			addEventListener( MouseEvent.MOUSE_OVER, switchState );

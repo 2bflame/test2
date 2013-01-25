@@ -11,13 +11,12 @@ package structs.linkedlists
 	
 	public class ListIterator implements IIterator
 	{
-		
 		private var _head:ListNode;
 		private var _current:ListNode;
 		
 		public function ListIterator( head:ListNode )
 		{
-			_head = _current = head;
+			_head = _current = ListNode.dummy(head);
 		}
 		
 		public function hasNext():Boolean

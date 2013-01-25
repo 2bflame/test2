@@ -18,13 +18,17 @@ package structs.graphs
 		private var _edges:Vector.<GraphEdge>;
 		private var _edgeCount:uint;
 		private var _visited:Boolean = false;
-		public var name:String;
+		public var data:*;
 		
-		public function Vertex( name:String = "" )
+		public function Vertex( data:* )
 		{
+			this.data = data;
 			_edges = new Vector.<GraphEdge>();
 			_edgeCount = 0;
-			this.name = name;
+		}
+		
+		public function get name():String{
+			return data.name;	
 		}
 		
 		public function addEdge( v:Vertex, weight:int ):void

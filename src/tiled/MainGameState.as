@@ -4,7 +4,6 @@ package tiled {
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	import citrus.core.CitrusObject;
 	import citrus.core.starling.StarlingState;
@@ -12,7 +11,6 @@ package tiled {
 	import feathers.controls.Callout;
 	import feathers.controls.Label;
 	import feathers.core.PopUpManager;
-	import feathers.display.ScrollRectManager;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -61,7 +59,7 @@ package tiled {
 			heroArt = view.getArt(hero) as DisplayObject;
 			
 			addEventListener(TouchEvent.TOUCH, handleHeroClick);
-			// Pause button.
+			map = new HexMap(width,height);
 		}
 		
 		private function handleHeroClick(event:TouchEvent):void
@@ -77,23 +75,7 @@ package tiled {
 						static=1;
 						const label:Label = new Label();
 						label.text = "Hello";
-						var callout:Callout =Callout.defaultCalloutFactory();
-						callout.content=label;
-						callout.x=obj.x-obj.width/2;
-						callout.y=obj.y+obj.height/2+5;
-						function enterFrameHandler(event:EnterFrameEvent):void
-						{
-							callout.x=obj.x-callout.width/2;							
-						}
-						function callout_closeHandler(event:Event):void
-						{
-							callout.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-							callout.removeEventListener(Event.CLOSE, callout_closeHandler);
-						}
-						callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-						callout.addEventListener(Event.CLOSE, callout_closeHandler);
-						PopUpManager.popUp(callout,true,false);
-						addChild(callout);
+						showObjCallout(label,obj);
 						break;
 					}
 				}
@@ -106,6 +88,27 @@ package tiled {
 
 		private var graph:GGraph=null;
 		private var map:HexMap=null;
+		
+		public function showObjCallout(label:DisplayObject,obj:Static):void
+		{
+				var callout:Callout =Callout.defaultCalloutFactory();
+				callout.content=label;
+				callout.x=obj.x-obj.width/2;
+				callout.y=obj.y+obj.height/2+5;
+				function enterFrameHandler(event:EnterFrameEvent):void
+				{
+					callout.x=obj.x-callout.width/2;							
+				}
+				function callout_closeHandler(event:Event):void
+				{
+					callout.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+					callout.removeEventListener(Event.CLOSE, callout_closeHandler);
+				}
+				callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+				callout.addEventListener(Event.CLOSE, callout_closeHandler);
+				PopUpManager.popUp(callout,true,false);
+				addChild(callout);
+		}
 		
 		public function addNative(obj:flash.display.DisplayObject):void
 		{
@@ -120,7 +123,8 @@ package tiled {
 		public function show_graph():void
 		{
 			if(graph==null){
-				graph = new GGraph();
+				graph = new GGraph(map);
+				graph.y=y;
 				Starling.current.nativeStage.addChild(graph);
 			}
 			else{
@@ -131,14 +135,11 @@ package tiled {
 		
 		public function show_map():void
 		{
-			if(map==null){
-				map = new HexMap(width,height);
-				map.show(0,y);
-
+			if(map.isVisible()){
+				map.hide();
 			}
 			else{
-				map.hide()
-				map = null;
+				map.show(0,y);
 			}
 		}		
 		

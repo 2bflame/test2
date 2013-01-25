@@ -6,6 +6,10 @@ package com.rush
 	
 	import starling.core.Starling;
 	
+	import structs.graphs.MyGraph;
+	import structs.graphs.MyVertex;
+	import structs.graphs.MyVertexData;
+	
 	/**
 	 * Example applet which uses hexagonal grid. It's a hexagonal version of the
 	 * "lights out" puzzle game: http://en.wikipedia.org/wiki/Lights_Out_(game)
@@ -44,6 +48,30 @@ package com.rush
 			BOARD_WIDTH=width/mCellMetrics.SIDE;
 			BOARD_HEIGHT=height/mCellMetrics.HEIGHT;			
 		}
+		
+		
+		public function createGraph(graph:MyGraph):void
+		{
+			for ( var i:int = 0; i < BOARD_WIDTH; i++ )
+			{
+				for ( var j:int = 0; j < BOARD_HEIGHT; j++ )
+				{
+					mCellMetrics.setCellIndex(i, j);
+					
+					graph.addVertex(
+						new MyVertex(
+							new MyVertexData(
+								i,j,
+								mCellMetrics.getCenterX(),
+								mCellMetrics.getCenterY()
+							)
+						)
+					);
+				}
+			}
+			
+		}
+		
 
 		public function paint():void
 		{
@@ -59,22 +87,19 @@ package com.rush
 				{
 					
 					mCellMetrics.setCellIndex(i, j);
+					mCellMetrics.computeCorners(mCornersX, mCornersY);
 					
+					//this.graphics.beginFill( ( mCells[j][i] == L_ON ) ? ORANGE : GRAY, 1 );
 					
-						mCellMetrics.computeCorners(mCornersX, mCornersY);
+					for ( var k:int = 0; k < mCornersX.length-1; k++ )
+					{
+						if( k == 0 ) graphics.moveTo( mCornersX[k], mCornersY[k] );
 						
-						//this.graphics.beginFill( ( mCells[j][i] == L_ON ) ? ORANGE : GRAY, 1 );
-						
-						
-						for ( var k:int = 0; k < mCornersX.length-1; k++ )
-						{
-							if( k == 0 ) graphics.moveTo( mCornersX[k], mCornersY[k] );
-							
-							graphics.lineTo( mCornersX[k + 1], mCornersY[k + 1] );
-						}
-						
-						graphics.lineTo( mCornersX[0], mCornersY[0] );
-						
+						graphics.lineTo( mCornersX[k + 1], mCornersY[k + 1] );
+					}
+					
+					graphics.lineTo( mCornersX[0], mCornersY[0] );
+					
 						//this.graphics.endFill();
 
 				}
@@ -105,6 +130,11 @@ package com.rush
 			paint();
 
 		}
+		
+		public function isVisible():Boolean
+		{
+			return display_object!=null;
+		}		
 		
 		public function show(x:int, y:Number):void
 		{

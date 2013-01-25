@@ -12,6 +12,12 @@ package structs.linkedlists
 		private var _data:*;
 		public var name:String = "";
 		public var next:ListNode = null;
+		public static function dummy(next:ListNode):ListNode  
+		{
+			var rt:ListNode=new ListNode(null);
+			rt.next = next;
+			return rt;
+		}
 		
 		public function ListNode( data:*, name:String = "" ) 
 		{
