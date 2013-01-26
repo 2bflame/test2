@@ -24,8 +24,8 @@ package com.rush
 		static public const ORANGE:int = 0xFF5721;
 		static public const GRAY:int = 0xCCCCCC;
 		
-		private var BOARD_WIDTH:int;
-		private var BOARD_HEIGHT:int;
+		public var BOARD_WIDTH:int;
+		public var BOARD_HEIGHT:int;
 
 		static private const NUM_HEX_CORNERS:int = 6;
 		private var CELL_RADIUS:int = 40;
@@ -57,19 +57,32 @@ package com.rush
 				for ( var j:int = 0; j < BOARD_HEIGHT; j++ )
 				{
 					mCellMetrics.setCellIndex(i, j);
-					
-					graph.addVertex(
-						new MyVertex(
+					var vertex:MyVertex=new MyVertex(
 							new MyVertexData(
 								i,j,
 								mCellMetrics.getCenterX(),
 								mCellMetrics.getCenterY()
 							)
-						)
-					);
+						);
+					vertex.id=i*BOARD_HEIGHT + j;
+					graph.addVertex(vertex);
 				}
 			}
 			
+			for ( var i1:int = 0; i1 < BOARD_WIDTH; i1++ )
+			{
+				for ( var j1:int = 0; j1 < BOARD_HEIGHT; j1++ )
+				{
+					mCellMetrics.setCellIndex(i1, j1);
+					for(var nid:int=0;nid<6;nid++){
+						var ni:int = mCellMetrics.getNeighborI(nid);
+						var nj:int = mCellMetrics.getNeighborJ(nid);
+						if(ni<0 || ni>=BOARD_WIDTH || nj<0 || nj>= BOARD_HEIGHT)
+							continue;
+						graph.getIJ(i1,j1).addEdge(graph.getIJ(ni,nj),1);
+					}
+				}
+			}
 		}
 		
 

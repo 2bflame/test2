@@ -22,6 +22,7 @@ package vis
 		private var _hover:Boolean;
 
 		private var current:MyVertex;
+		private var connected:Array=[];
 		
 		public function GVertex( current:MyVertex )
 		{
@@ -35,6 +36,15 @@ package vis
 			addEventListener( MouseEvent.MOUSE_OUT, switchState );
 			initNameField();
 			render();
+		}
+		
+		public function connect(id:int):Boolean
+		{
+			if(connected[id] != null){
+				return false;
+			}
+			connected[id] = 1;
+			return true;
 		}
 		
 		public function set selected( selected:Boolean ):void

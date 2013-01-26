@@ -6,5 +6,17 @@ package structs.graphs
 		{
 			super(data);
 		}
+		
+		public function set id(v:int):void
+		{
+			data.id=v;
+		}
+		
+		public function get id():int
+		{
+			return data.id;
+		}
+	
+		
 	}
 }

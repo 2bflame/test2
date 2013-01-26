@@ -7,8 +7,10 @@ package structs.graphs
 		public var x:int;
 		public var y:int;
 
-		private var i:int;
-		private var j:int;
+		public var i:int;
+		public var j:int;
+		
+		public var id:int;
 		
 		public static function indexComparator():IComparator{
 			return new IndexComparator();
